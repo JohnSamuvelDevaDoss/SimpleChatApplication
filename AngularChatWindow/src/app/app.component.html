@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700,300' rel='stylesheet' type='text/css'>
+<link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css'>
+<link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.2/css/font-awesome.min.css'>
+</head>
+<body>
+<div id="frame">
+    <div class="col-lg-4">
+    <div id="sidepanel">
+        <div id="profile">
+          <div class="wrap">
+            <img id="profile-img" src="http://emilcarlsson.se/assets/mikeross.png" class="online" alt="" />
+            <p>{{userName}}</p>
+            <i class="fa fa-chevron-down expand-button" aria-hidden="true"></i>
+            <div id="status-options">
+              <ul>
+                <li id="status-online" class="active"><span class="status-circle"></span> <p>Online</p></li>
+                <li id="status-away"><span class="status-circle"></span> <p>Away</p></li>
+                <li id="status-busy"><span class="status-circle"></span> <p>Busy</p></li>
+                <li id="status-offline"><span class="status-circle"></span> <p>Offline</p></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div id="search">
+          <label for=""><i class="fa fa-search" aria-hidden="true"></i></label>
+          <input type="text" placeholder="Search contacts..." />
+        </div>
+        <div id="contacts">
+          <ul>
+            <div *ngFor="let user of usersList">
+            <li class="contact">
+              <div class="wrap">
+                <span class="contact-status online"></span>
+                <img src= {{user.avatar_url}} alt="" />
+                <div class="meta">
+                  <p class="name" (click)="createConversation(user)">{{user.displayName}}</p>
+                   <p class="preview"></p> 
+                </div>
+              </div>
+            </li>
+          </div>
+          </ul>
+        </div>
+        <div id="bottom-bar">
+          <button id="addcontact"><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i> <span>Add contact</span></button>
+          <button id="settings"><i class="fa fa-cog fa-fw" aria-hidden="true"></i> <span>Settings</span></button>
+        </div>
+      </div>
+      </div>
+      <div class="col-lg-4">
+      <div id="sidepanel">
+        <div id="profile">
+          <div class="wrap">
+            <img id="profile-img" src="http://emilcarlsson.se/assets/mikeross.png" class="online" alt="" />
+            <p>{{userName}}</p>
+            <i class="fa fa-chevron-down expand-button" aria-hidden="true"></i>
+            <div id="status-options">
+              <ul>
+                <li id="status-online" class="active"><span class="status-circle"></span> <p>Online</p></li>
+                <li id="status-away"><span class="status-circle"></span> <p>Away</p></li>
+                <li id="status-busy"><span class="status-circle"></span> <p>Busy</p></li>
+                <li id="status-offline"><span class="status-circle"></span> <p>Offline</p></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div id="search">
+          <!-- <label for=""><i class="fa fa-search" aria-hidden="true"></i></label> -->
+          <input type="text" placeholder="Active Conversations" />
+        </div>
+        <div id="contacts">
+          <ul>
+            <div *ngFor="let reciver of reciverList">
+            <li class="contact">
+              <div class="wrap">
+                <span class="contact-status online"></span>
+                <img src= {{reciver.avatar_url}} alt="" />
+                <div class="meta">
+                  <p class="name" (click)="setCurrentReciver(reciver)">{{reciver.displayName}}</p>
+                   <p class="preview"></p> 
+                </div>
+              </div>
+            </li>
+          </div>
+          </ul>
+        </div>
+        <div id="bottom-bar">
+          <button id="addcontact"><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i> <span>Add contact</span></button>
+          <button id="settings"><i class="fa fa-cog fa-fw" aria-hidden="true"></i> <span>Settings</span></button>
+        </div>
+      </div>
+    </div>
+ 
+	<div class="content">
+		<div class="contact-profile">
+			<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
+			<p>{{recieverName}} </p>
+			<div class="social-media">
+				<i class="fa fa-facebook" aria-hidden="true"></i>
+				<i class="fa fa-twitter" aria-hidden="true"></i>
+				 <i class="fa fa-instagram" aria-hidden="true"></i>
+			</div>
+    </div>
+    
+		<div id ="messages" class="messages">
+       
+			<ul>
+                <div id="mess" *ngFor="let tex of chatTexts">
+                        <div *ngIf="validText(tex.author); then content else recievecontent" ></div>
+                        <ng-template #content>
+				<li class="sent">
+					<img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />
+                    <p>{{tex.author}}:</p><p [innerHTML]="tex.text | safehtml"></p>
+                </li>
+                </ng-template>
+                <ng-template #recievecontent>
+				<li class="replies">
+					<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
+                    <p>{{tex.author}}:</p><p [innerHTML]="tex.text|safehtml"></p>
+                </li>
+            </ng-template>
+            </div>
+			</ul>
+		</div>
+		<div class="message-input">
+        <div id = "container">
+            <div class = "wrap">
+                <!-- <input id="text-input" [(ngModel)]="convey"  type="text image"/> -->
+                <p class="new" #input contenteditable="true" (keyup.enter)="sendMsg()"  id ="text-input" ></p>
+                <i class="fa fa-smile-o" id = "icon" aria-hidden="true"></i>
+                <button (click)="sendMsg()" class="submit"><i aria-hidden="true" id="btn-chat"></i>Send</button>
+            </div>
+        </div>
+			<!-- <div class="wrap">
+            <input id="text-input" [(ngModel)]="convey" (keyup.enter)="sendMsg(convey)"  type="text"  placeholder="Write your message here..." />
+            <button class="submit"><i aria-hidden="true" (click)="sendMsg(convey)" id="btn-chat"></i>Send</button>
+			</div> -->
+		</div>
+	</div>
+</div>
+</body></html>
