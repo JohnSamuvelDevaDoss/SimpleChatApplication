@@ -55,6 +55,7 @@ public class SocketController {
     public List<User> getUserList(){
     	
     	logger.info("In Getting Users");
+    	logger.info("getting users");
     	List<User> userList = userDetails.getUserList();
     	logger.info("Users Recieved "+ userList);
     	
